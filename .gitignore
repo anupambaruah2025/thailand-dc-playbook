@@ -1,0 +1,8 @@
+# Gated report source docs — access is via the enquiry form, keep private
+downloads/
+
+# Local dev preview server (not needed on GitHub Pages)
+server.ps1
+
+# Converted markdown / scratch
+*.md.bak
