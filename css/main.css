@@ -401,59 +401,64 @@ header.site-nav.scrolled {
 .map-card-body .row b { color: var(--text-hi); font-weight: 600; }
 
 /* ==========================================================================
-   HYPERSCALER GLASS DECK — fanned, edge-on panes; logo hidden until pointed
+   HYPERSCALER ANCHOR PANES — face-on neon glass panes on a reflective floor
    ========================================================================== */
-.logo-wall { perspective: 1800px; }
-.logo-wall-stage { position: relative; height: 260px; overflow: visible; display: flex; align-items: center; }
+.anchor-divider { display:flex; align-items:center; justify-content:center; gap:0; margin:-8px auto 44px; width:min(360px,60%); }
+.anchor-divider .ln { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--blue-400)); }
+.anchor-divider .ln:last-child { background:linear-gradient(90deg,var(--blue-400),transparent); }
+.anchor-divider .node { width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 14px 2px var(--cyan); margin:0 12px; }
+
+.logo-wall { perspective: 2000px; }
+.logo-wall-stage { position: relative; overflow: visible; display: flex; justify-content: center; padding-top: 12px; }
 .logo-track {
-  position: relative; display: flex; align-items: center; height: 100%;
-  padding: 0 40px; margin: 0 auto; transform-style: preserve-3d;
+  display: flex; gap: clamp(7px, 0.9vw, 13px); align-items: flex-end; flex-wrap: nowrap; justify-content: center;
+  transform-style: preserve-3d; max-width: 100%;
+}
+@media (max-width: 900px) { .logo-track { flex-wrap: wrap; } }
+
+.anchor-pane {
+  position: relative; flex: 0 0 auto; width: clamp(104px, 10.4vw, 142px); height: clamp(138px, 13vw, 178px);
+  border-radius: 16px; padding: 18px 11px 13px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015)),
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 65%, transparent);
+  box-shadow:
+    0 0 26px -4px var(--accent),
+    inset 0 0 22px -8px var(--accent),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 26px 44px -22px #000;
+  backdrop-filter: blur(7px) saturate(130%);
+  transform: perspective(1400px) rotateY(-13deg);
+  -webkit-box-reflect: below 6px linear-gradient(transparent, transparent 62%, rgba(255,255,255,0.10));
+  transition: transform 0.55s var(--ease-spring), box-shadow 0.4s var(--ease-out), border-color 0.4s ease;
+  cursor: pointer; outline: none;
+  opacity: 0; animation: anchor-in 0.7s var(--ease-out) forwards; animation-delay: calc(var(--i,0) * 0.09s);
+}
+@keyframes anchor-in {
+  from { opacity: 0; transform: perspective(1400px) rotateY(-13deg) translateY(24px); }
+  to   { opacity: 1; transform: perspective(1400px) rotateY(-13deg) translateY(0); }
+}
+.anchor-pane:hover, .anchor-pane:focus-visible {
+  transform: perspective(1400px) rotateY(0deg) translateY(-12px) scale(1.05);
+  border-color: color-mix(in srgb, var(--accent) 92%, white);
+  box-shadow:
+    0 0 40px -2px var(--accent),
+    inset 0 0 30px -6px var(--accent),
+    inset 0 1px 0 rgba(255,255,255,0.45),
+    0 34px 54px -20px #000;
+  z-index: 5;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anchor-pane { animation: none; opacity: 1; }
 }
 
-.logo-card {
-  position: relative; flex-shrink: 0; width: 118px; height: 168px; margin-left: -68px; border-radius: 18px;
-  border: 1px solid rgba(var(--tint, 94,179,255), 0.4);
-  background: linear-gradient(155deg, rgba(var(--tint, 94,179,255), 0.32), rgba(var(--tint, 94,179,255), 0.08));
-  backdrop-filter: blur(6px);
-  box-shadow: 0 14px 30px -16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
-  transform-origin: left center;
-  transform: rotateY(-62deg) translateZ(0);
-  transition: transform 0.6s var(--ease-spring), box-shadow 0.5s var(--ease-out), z-index 0s;
-  animation: deck-breathe 7s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * -0.4s);
-}
-.logo-card:first-child { margin-left: 0; }
-@keyframes deck-breathe {
-  0%, 100% { transform: rotateY(-62deg) translateZ(0); }
-  50% { transform: rotateY(-56deg) translateZ(4px); }
-}
-.logo-card:hover, .logo-card:focus {
-  transform: rotateY(0deg) translateZ(70px) translateY(-16px) scale(1.12);
-  box-shadow: 0 30px 60px -18px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.4);
-  z-index: 20;
-  animation-play-state: paused;
-  outline: none;
-}
-@media (prefers-reduced-motion: reduce) { .logo-card { animation: none; } }
-
-.logo-face {
-  width: 100%; height: 100%; border-radius: inherit; display: flex; align-items: center; justify-content: center;
-  padding: 18px; overflow: hidden;
-}
-.logo-glyph {
-  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-  opacity: 0.22; filter: blur(1.5px) saturate(0.7);
-  transition: opacity 0.5s var(--ease-out) 0.1s, filter 0.5s var(--ease-out) 0.1s;
-}
-.logo-card:hover .logo-glyph, .logo-card:focus .logo-glyph { opacity: 1; filter: blur(0) saturate(1); }
-.logo-glyph svg { width: 100%; height: 100%; object-fit: contain; }
-.logo-glyph.wordmark {
-  border-radius: 12px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
-  padding: 10px;
-}
-.logo-glyph.wordmark span {
-  font-family: var(--font-display); font-weight: 650; font-size: 14px; line-height: 1.2; text-align: center;
-  color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+.anchor-logo { width: 100%; height: 56px; display: flex; align-items: center; justify-content: center; }
+.anchor-logo svg { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
+.anchor-name {
+  font-family: var(--font-body); font-weight: 600; font-size: 12.5px; line-height: 1.25; color: #eef3fb;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5); min-height: 1em;
 }
 
 .constellation-legend { display: flex; gap: 22px; margin-top: 20px; flex-wrap: wrap; }
